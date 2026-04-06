@@ -1,55 +1,23 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
+import { View, Text, TouchableOpacity } from "react-native"
+import { useRouter } from "expo-router"
 
-export default function HomeScreen() {
+export default function Home() {
+  const router = useRouter()
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Seja bem vindo(a)!</Text>
-      <Text style={styles.subtitle}>O que você deseja hoje?</Text>
+    <View style={{ flex: 1, justifyContent: "center", padding: 20 }}>
+      <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20 }}>
+        Seja bem-vindo
+      </Text>
 
       <TouchableOpacity
-  style={styles.button}
-  onPress={() => router.push('/(tabs)/especialidades')}
->
-  <Text style={styles.buttonText}>Fazer um agendamento</Text>
-</TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => router.push('/(tabs)/agendamentos')}
+        style={{ backgroundColor: "#4da6ff", padding: 15, borderRadius: 10 }}
+        onPress={() => router.push("/especialidades")}
       >
-        <Text style={styles.buttonText}>Ver meus agendamentos</Text>
+        <Text style={{ color: "white", textAlign: "center" }}>
+          Fazer Agendamento
+        </Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 25,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  subtitle: {
-    textAlign: 'center',
-    marginBottom: 50,
-    fontSize: 18,
-  },
-  button: {
-    backgroundColor: '#3B28CC',
-    padding: 18,
-    borderRadius: 12,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 18,
-  },
-});

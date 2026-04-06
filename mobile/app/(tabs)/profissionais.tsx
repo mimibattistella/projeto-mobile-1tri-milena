@@ -1,71 +1,69 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from "react"
+import { View, Text, TouchableOpacity } from "react-native"
+import { useLocalSearchParams, useRouter } from "expo-router"
+
+const API = "http://localhost:3000"
 
 export default function Profissionais() {
-  const { tipo } = useLocalSearchParams();
+  const [doctors, setDoctors] = useState<any[]>([])
+  const { especialidade } = useLocalSearchParams()
+  const router = useRouter()
 
-  const profissionais = {
-    Dermatologista: [
-      'Dra. Ana Paula',
-      'Dr. Marcelo Silva',
-    ],
-    Dentista: [
-      'Dr. Roberto',
-      'Dra. Fernanda',
-    ],
-    'Clínico Geral': [
-      'Dr. João Pedro',
-      'Dra. Camila Souza',
-      'Dr. Lucas Martins',
-    ],
-  };
+  useEffect(() => {
+    fetch(`${API}/doctors`)
+      .then((res) => res.json())
+      .then((data) => {
+        const espRecebida = decodeURIComponent(
+          String(especialidade)
+        ).trim()
 
-  const lista =
-    profissionais[tipo as keyof typeof profissionais] || [];
+        console.log("Especialidade:", espRecebida)
+        console.log("Dados backend:", data)
+
+        const filtrados = data.filter(
+          (doctor: any) =>
+            decodeURIComponent(doctor.especialidade).trim() === espRecebida
+        )
+
+        console.log("Filtrados:", filtrados)
+
+        setDoctors(filtrados)
+      })
+      .catch((err) => console.log("Erro:", err))
+  }, [especialidade])
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{tipo}</Text>
+    <View style={{ flex: 1, padding: 20 }}>
+      <Text style={{ fontSize: 22, fontWeight: "bold" }}>
+        Profissionais disponíveis
+      </Text>
 
-      {lista.map((profissional, index) => (
-        <TouchableOpacity
-          key={index}
-          style={styles.card}
-          onPress={() =>
-            router.push({
-              pathname: '/(tabs)/horarios',
-              params: { profissional },
-            })
-          }
-        >
-          <Text style={styles.text}>{profissional}</Text>
-        </TouchableOpacity>
-      ))}
+      {doctors.length === 0 ? (
+        <Text style={{ marginTop: 20 }}>
+          Nenhum profissional encontrado
+        </Text>
+      ) : (
+        doctors.map((doctor) => (
+          <TouchableOpacity
+            key={doctor.id}
+            style={{
+              marginTop: 15,
+              backgroundColor: "#eee",
+              padding: 15,
+              borderRadius: 10
+            }}
+            onPress={() =>
+              router.push({
+                pathname: "/horarios",
+                params: { id: doctor.id }
+              })
+            }
+          >
+            <Text>{doctor.nome}</Text>
+            <Text>{doctor.especialidade}</Text>
+          </TouchableOpacity>
+        ))
+      )}
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 25,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    textAlign: 'center',
-  },
-  card: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 20,
-  },
-  text: {
-    fontSize: 20,
-  },
-});

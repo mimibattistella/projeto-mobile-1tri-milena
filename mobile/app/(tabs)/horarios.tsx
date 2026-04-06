@@ -1,43 +1,52 @@
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useLocalSearchParams, useRouter } from "expo-router"
+import { View, Text, TouchableOpacity, Alert } from "react-native"
+import { useEffect, useState } from "react"
+
+const API = "http://localhost:3000"
 
 export default function Horarios() {
-  const horarios = ['09:00', '10:30', '13:30', '15:00'];
+  const { id } = useLocalSearchParams()
+  const [doctor, setDoctor] = useState<any>(null)
+  const router = useRouter()
 
-  function confirmar(horario: string) {
-    Alert.alert('Agendamento confirmado!', `Horário: ${horario}`);
+  useEffect(() => {
+    if (!id) return
+
+    fetch(`${API}/doctors/${id}`)
+      .then((res) => res.json())
+      .then((data) => setDoctor(data))
+      .catch((err) => console.log("Erro doctor:", err))
+  }, [id])
+
+  const agendar = async (horario: string) => {
+    await fetch(`${API}/appointments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        doctorId: id,
+        horario,
+        paciente: "Paciente Teste"
+      })
+    })
+
+    Alert.alert("Sucesso", `Consulta agendada às ${horario}`)
+    router.push("/agendamentos")
   }
 
+  if (!doctor) return <Text>Carregando...</Text>
+
   return (
-    <View style={styles.container}>
-      {horarios.map((hora, index) => (
-        <TouchableOpacity
-          key={index}
-          style={styles.button}
-          onPress={() => confirmar(hora)}
-        >
-          <Text style={styles.buttonText}>{hora}</Text>
+    <View style={{ flex: 1, padding: 20 }}>
+      <Text>{doctor.nome}</Text>
+      <Text>{doctor.especialidade}</Text>
+
+      {doctor.horarios.map((h: string) => (
+        <TouchableOpacity key={h} onPress={() => agendar(h)}>
+          <Text>{h}</Text>
         </TouchableOpacity>
       ))}
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 25,
-    backgroundColor: '#fff',
-  },
-  button: {
-    backgroundColor: '#3B28CC',
-    padding: 18,
-    borderRadius: 12,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 18,
-  },
-});

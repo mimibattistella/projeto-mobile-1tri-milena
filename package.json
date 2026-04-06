@@ -1,0 +1,24 @@
+{
+  "name": "projeto-mobile-1tri-milena",
+  "version": "1.0.0",
+  "description": "Hiandara n10, Jordana n13, Mélanie n23, Milena n25",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mimibattistella/projeto-mobile-1tri-milena.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mimibattistella/projeto-mobile-1tri-milena/issues"
+  },
+  "homepage": "https://github.com/mimibattistella/projeto-mobile-1tri-milena#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}

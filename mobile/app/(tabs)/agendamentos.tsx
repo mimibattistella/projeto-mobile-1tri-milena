@@ -1,29 +1,38 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { useEffect, useState } from "react"
+import { View, Text } from "react-native"
 
-export default function AgendamentosScreen() {
+const API = "http://192.168.56.1:3000"
+
+export default function Agendamentos() {
+  const [appointments, setAppointments] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch(`${API}/appointments`)
+      .then(res => res.json())
+      .then(data => setAppointments(data))
+  }, [])
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Seus agendamentos:</Text>
-      <Text style={styles.text}>
-        Você não tem nenhum agendamento marcado.
+    <View style={{ flex: 1, padding: 20 }}>
+      <Text style={{ fontSize: 22, fontWeight: "bold" }}>
+        Meus Agendamentos
       </Text>
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 25,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  text: {
-    fontSize: 18,
-  },
-});
+      {appointments.map((item) => (
+        <View
+          key={item.id}
+          style={{
+            marginTop: 15,
+            backgroundColor: "#eee",
+            padding: 15,
+            borderRadius: 10
+          }}
+        >
+          <Text>Médico ID: {item.doctorId}</Text>
+          <Text>Horário: {item.horario}</Text>
+          <Text>Paciente: {item.paciente}</Text>
+        </View>
+      ))}
+    </View>
+  )
+}
