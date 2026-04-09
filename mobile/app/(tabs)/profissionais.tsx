@@ -13,18 +13,18 @@ export default function Profissionais() {
     fetch(`${API}/doctors`)
       .then((res) => res.json())
       .then((data) => {
-        const espRecebida = decodeURIComponent(
-          String(especialidade)
-        ).trim()
+        const espRecebida = String(especialidade)
+          .trim()
+          .toLowerCase()
 
-        console.log("Especialidade:", espRecebida)
-        console.log("Dados backend:", data)
-
-        const filtrados = data.filter(
-          (doctor: any) =>
-            decodeURIComponent(doctor.especialidade).trim() === espRecebida
+        const filtrados = data.filter((doctor: any) =>
+          String(doctor.especialidade)
+            .trim()
+            .toLowerCase()
+            .includes(espRecebida)
         )
 
+        console.log("Especialidade recebida:", espRecebida)
         console.log("Filtrados:", filtrados)
 
         setDoctors(filtrados)
@@ -59,7 +59,9 @@ export default function Profissionais() {
               })
             }
           >
-            <Text>{doctor.nome}</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+              {doctor.nome}
+            </Text>
             <Text>{doctor.especialidade}</Text>
           </TouchableOpacity>
         ))
