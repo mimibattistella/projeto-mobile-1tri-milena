@@ -11,7 +11,7 @@ export default function Home() {
       </Text>
 
       <TouchableOpacity
-        style={{ backgroundColor: "#4da6ff", padding: 15, borderRadius: 10 }}
+        style={{ backgroundColor: "#1a2dff", padding: 15, borderRadius: 10 }}
         onPress={() => router.push("/especialidades")}
       >
         <Text style={{ color: "white", textAlign: "center" }}>
