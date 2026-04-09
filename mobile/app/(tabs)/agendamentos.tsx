@@ -24,7 +24,7 @@ export default function Agendamentos() {
     <View style={{ flex: 1, padding: 20 }}>
       <Text
         style={{
-          fontSize: 22,
+          fontSize: 43,
           fontWeight: "bold",
           marginBottom: 20
         }}
