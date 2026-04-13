@@ -21,7 +21,7 @@ export default function Especialidades() {
           key={esp}
           style={{
             marginTop: 15,
-            backgroundColor: "#050505",
+            backgroundColor: "#ffffff",
             padding: 15,
             borderRadius: 10
           }}
