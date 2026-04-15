@@ -12,7 +12,7 @@ export default function Especialidades() {
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      <Text style={{ fontSize: 23, fontWeight: "bold" }}>
+      <Text style={{ fontSize: 22, fontWeight: "bold" }}>
         Especialidades
       </Text>
 
